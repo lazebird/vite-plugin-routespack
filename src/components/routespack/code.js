@@ -61,7 +61,9 @@ function trimRoutes(data) {
     else trimRoutes(r.children);
   }
 }
-function sortRoutes(data, f = (a, b) => b.meta?.orderNo ?? 10000 - a.meta?.orderNo ?? 10000) {
+const getOrder = (a) => (a.meta?.orderNo ? a.meta.orderNo : 1000);
+const routeCmp = (a, b) => getOrder(a) - getOrder(b);
+function sortRoutes(data, f = routeCmp) {
   data.sort(f);
   for (const r of data) if (r.children) sortRoutes(r.children, f);
 }
