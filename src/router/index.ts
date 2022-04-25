@@ -5,8 +5,6 @@ import { froutes as fRoutes } from '@/components/routespack/code';
 
 export const routes = [...fRoutes.children[0].children[0].children];
 // routes.push({ path: '/', redirect: '/routes', component: () => import('@/layout/test.vue'), children: [{ path: 'routes', component: () => import('@/views/routes.vue') }] });
-routes.push({ path: '/', redirect: '/monitor' });
-routes.push({ path: '/routes', component: () => import('@/views/routes.vue') });
 
 export const router = createRouter({
   history: createWebHashHistory(),

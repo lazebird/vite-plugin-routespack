@@ -17,5 +17,4 @@
   const route = ref(useRoute());
 
   const pageHeight = () => window.innerHeight - 80;
-  console.log(pageHeight());
 </script>
