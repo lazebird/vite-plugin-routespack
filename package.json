@@ -1,25 +1,28 @@
 {
-  "name": "@lazebird/vue3template",
+  "name": "@lazebird/vite-plugin-routespack",
   "version": "0.0.1",
   "keywords": [
     "vue3",
-    "vite"
+    "vite",
+    "plugin",
+    "i18n",
+    "locales"
   ],
   "author": "lazebird",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/lazebird/vue3template/issues"
+    "url": "https://github.com/lazebird/vite-plugin-routespack/issues"
   },
-  "homepage": "https://github.com/lazebird/vue3template",
+  "homepage": "https://github.com/lazebird/vite-plugin-routespack",
   "files": [
     "dist"
   ],
-  "main": "./dist/vue3template.umd.js",
-  "module": "./dist/vue3template.es.js",
+  "main": "./dist/vite-plugin-routespack.umd.js",
+  "module": "./dist/vite-plugin-routespack.es.js",
   "exports": {
     ".": {
-      "import": "./dist/vue3template.es.js",
-      "require": "./dist/vue3template.umd.js"
+      "import": "./dist/vite-plugin-routespack.es.js",
+      "require": "./dist/vite-plugin-routespack.umd.js"
     }
   },
   "private": false,
@@ -37,6 +40,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "axios": "^0.26.1",
     "vue": "^3.2.31"
   },
   "devDependencies": {

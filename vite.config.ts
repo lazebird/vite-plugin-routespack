@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { resolve } from 'path';
 import Components from 'unplugin-vue-components/vite';
+// import vitePluginroutespack from './src/components/routespack/index';
 
 import visualizer from 'rollup-plugin-visualizer';
 const plugins = [];
@@ -13,20 +14,21 @@ function pathResolve(dir: string) {
 
 const buildlib = {
   lib: {
-    entry: pathResolve('src/components/toc/index.js'),
-    name: 'vue3outline',
-    fileName: (format) => `vue3outline.${format}.js`,
+    entry: pathResolve('src/components/routespack/index.ts'),
+    name: 'vite-plugin-routespack',
+    fileName: (format) => `vite-plugin-routespack.${format}.js`,
   },
   sourcemap: true,
   rollupOptions: {
-    external: ['vue'],
-    output: { globals: { vue: 'Vue' } },
+    external: ['vue', 'fs', 'path'],
+    output: { globals: { vue: 'Vue', fs: 'fs', path: 'path' } },
   },
 };
 const builddemo = {};
 
 export default defineConfig(({ command, mode }) => {
-  console.log('[vite.config.ts] command %s mode %s', command, mode);
+  // if (mode !== 'build') plugins.push(vitePluginroutespack({ dir: '/routes', log: { level: 6, filters: ['/node_modules/'], maxLen: 200 } }));
+  console.log('[vite.config.ts] command %s, mode %s, plugins %s', command, mode, JSON.stringify(plugins));
   return {
     base: './',
     resolve: {
