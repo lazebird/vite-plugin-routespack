@@ -25,6 +25,8 @@
   // import { routes as vRoutes, modules as vModules } from 'virtual:routes';
   import { modules as vModules, routes as vRoutes, froutes as fRoutes } from '@/components/routespack/code';
 
+  console.log('routes %o, froutes %o', vRoutes, fRoutes);
+
   const showBrief = ref(true);
 
   const moduleReplacer = (k, v) => (!k.length || k.includes('.ts') ? v : '...');

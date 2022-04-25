@@ -1,5 +1,5 @@
 export const modules = import.meta.globEager('/routes/**/*.ts'); // XXX_PATH
-const prefix = 'XXX_PATH';
+const prefix = '';
 
 const path2dir = (path) => (path.lastIndexOf('/') >= 0 ? path.slice(0, path.lastIndexOf('/')) : '');
 const path2name = (path) => (path.lastIndexOf('/') >= 0 ? path.slice(path.lastIndexOf('/') + 1) : path);
@@ -16,8 +16,8 @@ function file2obj(file, parent) {
     parent = parent.children.find((c) => c.rpath === g);
   }
   const index = parent.children?.findIndex((c) => c.rpath === name);
-  if (index >= 0) parent.children[index] = { ...parent.children[index], ...file.data };
-  else parent.children = [...(parent.children ?? []), { ...file.data, path, rpath: name }];
+  if (index >= 0) parent.children[index] = { ...parent.children[index], ...file.data, fpath: file.path };
+  else parent.children = [...(parent.children ?? []), { ...file.data, path, rpath: name, fpath: file.path }];
 }
 function modules2routes(modules) {
   const fileData = Object.keys(modules).map((k) => ({ path: k.slice(prefix.length), data: modules[k].default }));
