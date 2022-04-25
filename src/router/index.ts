@@ -1,10 +1,9 @@
 import type { App } from 'vue';
 
 import { createRouter, createWebHashHistory } from 'vue-router';
-import { froutes as fRoutes } from '@/components/routespack/code';
+import { froutes as routes } from '@/components/routespack/code';
 
-export const routes = [...fRoutes.children[0].children[0].children];
-// routes.push({ path: '/', redirect: '/routes', component: () => import('@/layout/test.vue'), children: [{ path: 'routes', component: () => import('@/views/routes.vue') }] });
+export { routes };
 
 export const router = createRouter({
   history: createWebHashHistory(),

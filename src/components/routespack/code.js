@@ -1,29 +1,31 @@
 export const modules = import.meta.globEager('/routes/**/*.ts'); // XXX_PATH
 const prefix = '';
 
-const path2dir = (path) => (path.lastIndexOf('/') >= 0 ? path.slice(0, path.lastIndexOf('/')) : '');
-const path2name = (path) => (path.lastIndexOf('/') >= 0 ? path.slice(path.lastIndexOf('/') + 1) : path);
-// const name2ext = (name) => (name.lastIndexOf('.') >= 0 ? name.slice(name.lastIndexOf('.')) : name);
-const name2str = (name) => (name.lastIndexOf('.') >= 0 ? name.slice(0, name.lastIndexOf('.')) : name);
+function searchParent(path, parent) {
+  for (const c of parent.children ?? []) if (c.path !== '/' && path.includes(c.path)) return searchParent(path, c); // '/' keep root path alone
+  return parent;
+}
 
 function file2obj(file, parent) {
-  // console.log('file %o, parent %o', file, parent);
-  const path = file.data.path?.length ? file.data.path : file.path;
-  const dir = path2dir(path);
-  const name = name2str(path2name(path));
-  for (const g of dir.split('/')) {
-    if (!parent.children?.find((c) => c.rpath === g)) parent.children = [...(parent.children ?? []), { rpath: g }];
-    parent = parent.children.find((c) => c.rpath === g);
-  }
-  const index = parent.children?.findIndex((c) => c.rpath === name);
-  if (index >= 0) parent.children[index] = { ...parent.children[index], ...file.data, fpath: file.path };
-  else parent.children = [...(parent.children ?? []), { ...file.data, path, rpath: name, fpath: file.path }];
+  const nparent = searchParent(file.path, parent); // keep in order, parent first,
+  // console.log('path %s, parent %o, nparent %o', file.path, parent, nparent);
+  if (nparent.path === file.path || nparent.children?.find((c) => c.path === file.path)) return console.warn('[conflict] drop %s: %s', file.fpath, file.path); // no dup supported
+  nparent.children = [...(nparent.children ?? []), { ...file.data }];
 }
 function modules2routes(modules) {
-  const fileData = Object.keys(modules).map((k) => ({ path: k.slice(prefix.length), data: modules[k].default }));
+  const fileData = [];
+  for (const k in modules) {
+    for (const e in modules[k]) {
+      const d = modules[k][e];
+      if (typeof d !== 'object') continue;
+      if (d.path && !k.includes(d.path)) console.warn('[conflict] use configured %s instead of %s', d.path, k);
+      fileData.push({ path: d.path ?? k.slice(prefix.length), data: d, fpath: k });
+    }
+  }
+  const sortedFiles = fileData.sort((a, b) => a.path.localeCompare(b.path));
   const routeData = {};
-  for (const f of fileData.filter((f) => f.data)) file2obj(f, routeData);
-  return routeData;
+  for (const f of sortedFiles) file2obj(f, routeData);
+  return routeData.children;
 }
 
 const flattenCheck = (c, p) => p?.component && c.component.toString() === p.component.toString();
@@ -35,10 +37,10 @@ function flattenRoutes(current, parent, routes, omittedNode) {
   if (flag && !current.children) console.log('fatal error for node %o', current);
 
   if (!flag) {
-    if (!routes.children) routes.children = [];
     const info = omittedNode ? { path: pathCombine(omittedNode.path, current.path) } : {};
-    routes.children.push({ ...current, ...info, children: undefined });
-    curRoute = routes.children[routes.children.length - 1];
+    parent = { ...current, ...info, children: [] };
+    routes.push(parent);
+    curRoute = parent.children;
   } else {
     if (parent.redirect && current.redirect) {
       if (current.redirect.includes(parent.redirect)) parent.redirect = current.redirect;
@@ -48,7 +50,7 @@ function flattenRoutes(current, parent, routes, omittedNode) {
   // console.log('current path %s, flag %o, omittedNode path %s, curRoute path %s', current.path, flag, omittedNode?.path, curRoute.path);
 
   if (!current.children) return routes;
-  for (const c of current.children) flattenRoutes(c, curRoute, curRoute, flag ? current : null);
+  for (const c of current.children) flattenRoutes(c, parent, curRoute, flag ? current : null);
   return routes;
 }
 
@@ -65,8 +67,10 @@ function sortRoutes(data, f = (a, b) => b.meta?.orderNo ?? 10000 - a.meta?.order
 }
 
 const routes = modules2routes(modules);
-sortRoutes(routes.children);
-const froutes = flattenRoutes(routes, null, {}, '');
-// console.log(froutes.children[0].children[0]);
+sortRoutes(routes);
+let froutes = [];
+for (const r of routes) froutes = flattenRoutes(r, null, froutes);
+trimRoutes(froutes);
+// console.log(froutes);
 
 export { routes, froutes, flattenRoutes, trimRoutes, sortRoutes };
