@@ -1,0 +1,1 @@
+import{r as o,i as s,o as r,c as a,a as t,t as n,b as c}from"./vendor.06fd7fa7.js";const l=t("button",{style:{float:"right","margin-right":"40px"},onclick:"location.href = '/';"},"Home",-1),i=t("div",null,"APP route: ",-1),u=c(),h={setup(_){const e=o(s());return(p,d)=>(r(),a("div",null,[l,i,u,t("pre",null,n(JSON.stringify(e.value,null,2)),1)]))}};export{h as default};
