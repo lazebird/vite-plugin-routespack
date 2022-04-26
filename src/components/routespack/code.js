@@ -36,18 +36,13 @@ function flattenRoutes(current, parent, routes, omittedNode) {
   let curRoute = routes;
   if (flag && !current.children) console.log('fatal error for node %o', current);
 
+  const info = omittedNode ? { path: pathCombine(omittedNode.path, current.path) } : {};
+  const node = { ...current, ...info, children: [] };
+  routes.push(node);
   if (!flag) {
-    const info = omittedNode ? { path: pathCombine(omittedNode.path, current.path) } : {};
-    parent = { ...current, ...info, children: [] };
-    routes.push(parent);
-    curRoute = parent.children;
-  } else {
-    if (parent.redirect && current.redirect) {
-      if (current.redirect.includes(parent.redirect)) parent.redirect = current.redirect;
-      else if (current.redirect.charAt(0) !== '/') parent.redirect = parent.redirect + '/' + current.redirect;
-    }
+    curRoute = node.children;
+    parent = node;
   }
-  // console.log('current path %s, flag %o, omittedNode path %s, curRoute path %s', current.path, flag, omittedNode?.path, curRoute.path);
 
   if (!current.children) return routes;
   for (const c of current.children) flattenRoutes(c, parent, curRoute, flag ? current : null);

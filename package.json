@@ -41,7 +41,8 @@
   },
   "dependencies": {
     "axios": "^0.26.1",
-    "vue": "^3.2.31"
+    "vue": "^3.2.31",
+    "vue-router": "^4.0.14"
   },
   "devDependencies": {
     "@commitlint/cli": "^16.2.1",
