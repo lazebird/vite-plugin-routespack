@@ -3,7 +3,7 @@
     <div style="text-align: center">
       <label for="showBrief">showBrief</label>
       <input type="checkbox" id="showBrief" v-model="showBrief" />
-      <a style="text-decoration: underline; color: blue; margin-left: 40px" onclick="location.href = '/';">Back to Home</a>
+      <button style="float: right; margin-right: 40px" onclick="location.href = '/';">Home</button>
     </div>
     <div style="display: flex">
       <div style="width: 33%">
@@ -25,8 +25,9 @@
   import { ref } from 'vue';
   // import { routes as vRoutes, modules as vModules } from 'virtual:routes';
   import { modules as vModules, routes as vRoutes, froutes as fRoutes } from '@/components/routespack/code';
+  import { router } from '@/router';
 
-  console.log('routes %o, froutes %o', vRoutes, fRoutes);
+  console.log('vroutes %o, froutes %o, routes %o', vRoutes, fRoutes, router.getRoutes());
 
   const showBrief = ref(true);
 

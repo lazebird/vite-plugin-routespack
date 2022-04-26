@@ -5,7 +5,7 @@ import { LAYOUT } from '@/router/constant';
 
 const route: AppRouteModule = {
   path: '/config/security',
-  name: 'Security',
+  name: 'SecurityConf',
   component: LAYOUT,
   redirect: '/config/security/psec',
   meta: {

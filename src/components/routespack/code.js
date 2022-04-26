@@ -33,9 +33,11 @@ function flattenRoutes(current, parent, routes, omittedNode) {
   const flag = flattenCheck(current, parent);
   let curRoute = routes;
   if (flag && !current.children) console.log('fatal error for node %o', current);
-
-  const info = omittedNode ? { path: pathCombine(omittedNode.path, current.path) } : {};
-  const node = { ...current, ...info, children: !flag && current.children?.length ? [] : undefined };
+  const { component, children, ...other } = current;
+  let node = { ...other };
+  if (omittedNode) node = { ...node, path: pathCombine(omittedNode.path, current.path) };
+  if (!flag) node = { ...node, component };
+  if (!flag && children?.length) node = { ...node, children: [] };
   routes.push(node);
   if (!flag) {
     curRoute = node.children;
