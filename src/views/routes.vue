@@ -23,8 +23,8 @@
 </template>
 <script setup>
   import { ref } from 'vue';
-  // import { routes as vRoutes, modules as vModules } from 'virtual:routes';
-  import { modules as vModules, routes as vRoutes, froutes as fRoutes } from '@/components/routespack/code';
+  import { modules as vModules, routes as vRoutes, froutes as fRoutes } from 'virtual:routes';
+  // import { modules as vModules, routes as vRoutes, froutes as fRoutes } from '@/components/routespack/code';
   import { router } from '@/router';
 
   console.log('vroutes %o, froutes %o, routes %o', vRoutes, fRoutes, router.getRoutes());

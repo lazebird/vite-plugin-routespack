@@ -2,7 +2,7 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { resolve } from 'path';
 import Components from 'unplugin-vue-components/vite';
-// import vitePluginroutespack from './src/components/routespack/index';
+import vitePluginroutespack from './src/components/routespack/index';
 
 import visualizer from 'rollup-plugin-visualizer';
 const plugins = [];
@@ -27,7 +27,7 @@ const buildlib = {
 const builddemo = {};
 
 export default defineConfig(({ command, mode }) => {
-  // if (mode !== 'build') plugins.push(vitePluginroutespack({ dir: '/routes', log: { level: 6, filters: ['/node_modules/'], maxLen: 200 } }));
+  if (mode !== 'build') plugins.push(vitePluginroutespack({ dir: '/routes' }));
   console.log('[vite.config.ts] command %s, mode %s, plugins %s', command, mode, JSON.stringify(plugins));
   return {
     base: './',

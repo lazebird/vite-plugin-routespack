@@ -3,29 +3,70 @@ import type { routespackOpt } from '#/plugin';
 import * as Log from './log';
 
 const TmpLocalCode =
-  "export const modules = import.meta.globEager('XXX_PATH/**/*.ts');\
+  "const modules = import.meta.globEager('XXX_PATH/**/*.ts');\
   const prefix = 'XXX_PATH';\
   \
-  const path2extname = (path) => path.slice(path.lastIndexOf('.'));\
+  function searchParent(path, parent) {\
+    for (const c of parent.children ?? []) if (path.includes(c.path)) return searchParent(path, c);\
+    return parent;\
+  }\
   \
   function file2obj(file, parent) {\
-    const extname = path2extname(file.path);\
-    if (file.path.slice(-extname.length) !== extname) return;\
-    const p = file.path.slice(file.path.charAt(0) === '/' ? 1 : 0, -extname.length);\
-    for (const d of p.split('/')) {\
-      if (!parent[d]) parent[d] = {};\
-      parent = parent[d];\
+    const nparent = searchParent(file.path, parent); \
+    if (nparent.path === file.path || nparent.children?.find((c) => c.path === file.path)) return console.warn('[conflict] drop %s: %s', file.fpath, file.path);\
+    nparent.children = [...(nparent.children ?? []), { ...file.data }];\
+  }\
+  function modules2routes(modules) {\
+    const fileData = [];\
+    for (const k in modules) {\
+      for (const e in modules[k]) {\
+        const d = modules[k][e];\
+        if (typeof d !== 'object') continue;\
+        if (d.path && !k.includes(d.path)) console.warn('[conflict] use configured %s instead of %s', d.path, k);\
+        fileData.push({ path: d.path ?? k.slice(prefix.length), data: d, fpath: k });\
+      }\
     }\
-    Object.assign(parent, file.data);\
-  }\
-  function genRoutes() {\
-    const fileData = Object.keys(modules).map((k) => ({ path: k.slice(prefix.length), data: modules[k].default }));\
+    const sortedFiles = fileData.sort((a, b) => a.path.localeCompare(b.path));\
     const routeData = {};\
-    for (const f of fileData.filter((f) => f.data)) file2obj(f, routeData);\
-    return routeData;\
+    for (const f of sortedFiles) file2obj(f, routeData);\
+    return routeData.children;\
   }\
-  export const routes = genRoutes();\
-  ";
+  \
+  const flattenCheck = (c, p) => !c.component || (p?.component && c.component.toString() === p.component.toString());\
+  const pathCombine = (p1, p2) => (p2.charAt(0) === '/' ? p2 : p1.charAt(p1.length - 1) === '/' ? `${p1}${p2}` : `${p1}/${p2}`);\
+  function flattenRoutes(current, parent, routes, omittedNode) {\
+    const flag = flattenCheck(current, parent);\
+    let curRoute = routes;\
+    if (flag && !current.children) console.log('fatal error for node %o', current);\
+    const { component, children, ...other } = current;\
+    let node = { ...other };\
+    if (omittedNode) node = { ...node, path: pathCombine(omittedNode.path, current.path) };\
+    if (!flag) node = { ...node, component };\
+    if (!flag && children?.length) node = { ...node, children: [] };\
+    routes.push(node);\
+    if (!flag) {\
+      curRoute = node.children;\
+      parent = node;\
+    }\
+  \
+    if (!current.children) return routes;\
+    for (const c of current.children) flattenRoutes(c, parent, curRoute, flag ? current : null);\
+    return routes;\
+  }\
+  \
+  const getOrder = (a) => (a.meta?.orderNo ? a.meta.orderNo : 1000);\
+  function sortRoutes(data, f = (a, b) => getOrder(a) - getOrder(b)) {\
+    data.sort(f);\
+    for (const r of data) if (r.children) sortRoutes(r.children, f);\
+  }\
+  \
+  const routes = modules2routes(modules);\
+  sortRoutes(routes);\
+  let froutes = [];\
+  for (const r of routes) froutes = flattenRoutes(r, null, froutes);\
+  \
+  export { modules, routes, froutes, flattenRoutes, sortRoutes };\
+";
 
 let pluginOpt: routespackOpt;
 let server: ViteDevServer;
@@ -52,7 +93,6 @@ export default function routespack(opt: routespackOpt): Plugin {
       if (pluginOpt.log?.filters?.length) Log.config({ filters: [] });
       Log.info('vite-plugin-routespack opt %o', pluginOpt);
       if (pluginOpt.log) Log.config(pluginOpt.log);
-      // localData = collectData(pluginOpt.dir);
     },
     resolveId(source, importer) {
       Log.debug('source %s, importer %s', source, importer);
@@ -70,7 +110,6 @@ export default function routespack(opt: routespackOpt): Plugin {
     },
     handleHotUpdate(ctx) {
       if (!ctx.file.includes(pluginOpt.dir)) return;
-      // localData = collectData(pluginOpt.dir);
       reload(ctx.file);
     },
   };
