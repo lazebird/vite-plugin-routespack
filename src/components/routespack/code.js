@@ -1,4 +1,4 @@
-export const modules = import.meta.globEager('/routes/**/*.ts'); // XXX_PATH
+const modules = import.meta.globEager('/routes/**/*.ts'); // XXX_PATH
 const prefix = '';
 
 function searchParent(path, parent) {
@@ -75,4 +75,4 @@ for (const r of routes) froutes = flattenRoutes(r, null, froutes);
 trimRoutes(froutes);
 // console.log(froutes);
 
-export { routes, froutes, flattenRoutes, trimRoutes, sortRoutes };
+export { modules, routes, froutes, flattenRoutes, trimRoutes, sortRoutes };

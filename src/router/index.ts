@@ -1,13 +1,13 @@
 import type { App } from 'vue';
 
 import { createRouter, createWebHashHistory } from 'vue-router';
-import { froutes as routes } from '@/components/routespack/code';
+import { froutes, routes } from '@/components/routespack/code';
 
 export { routes };
 
 export const router = createRouter({
   history: createWebHashHistory(),
-  routes,
+  routes: froutes,
   // strict: true,
   // scrollBehavior: () => ({ left: 0, top: 0 }),
 });

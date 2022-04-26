@@ -3,6 +3,7 @@
     <div style="text-align: center">
       <label for="showBrief">showBrief</label>
       <input type="checkbox" id="showBrief" v-model="showBrief" />
+      <a style="text-decoration: underline; color: blue; margin-left: 40px" onclick="location.href = '/';">Back to Home</a>
     </div>
     <div style="display: flex">
       <div style="width: 33%">
