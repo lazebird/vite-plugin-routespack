@@ -2,7 +2,7 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { resolve } from 'path';
 import Components from 'unplugin-vue-components/vite';
-import vitePluginroutespack from './src/components/routespack/index';
+import vitePluginroutespack from '@lazebird/vite-plugin-routespack';
 
 import visualizer from 'rollup-plugin-visualizer';
 const plugins = [];

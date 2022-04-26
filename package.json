@@ -17,19 +17,10 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/vite-plugin-routespack.umd.js",
-  "module": "./dist/vite-plugin-routespack.es.js",
-  "exports": {
-    ".": {
-      "import": "./dist/vite-plugin-routespack.es.js",
-      "require": "./dist/vite-plugin-routespack.umd.js"
-    }
-  },
-  "types": "./dist/types/index.d.ts",
   "private": false,
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build && mkdir dist/types && cp src/components/routespack/client.d.ts dist/types/index.d.ts",
+    "build": "vue-tsc --noEmit && vite build",
     "demo": "vue-tsc --noEmit && vite build --mode demo",
     "publish": "npm publish --access public",
     "preview": "vite preview",
@@ -48,6 +39,7 @@
   "devDependencies": {
     "@commitlint/cli": "^16.2.1",
     "@commitlint/config-conventional": "^16.2.1",
+    "@lazebird/vite-plugin-routespack": "^0.0.2",
     "@types/node": "^17.0.19",
     "@typescript-eslint/eslint-plugin": "^5.12.1",
     "@typescript-eslint/parser": "^5.12.1",
