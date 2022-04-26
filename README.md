@@ -22,6 +22,9 @@ plugins.push(vitePluginroutespack({ dir: '/routes'}));
 import {froutes} from 'virtual:routes';
 export const router = createRouter({ history: createWebHashHistory(), routes: froutes });
 export const setupRouter = (app: App<Element>) => app.use(router);
+// 类型，创建/src/vite-env.d.ts，写入下列内容
+// /src/vite-env.d.ts
+/// <reference types="@lazebird/vite-plugin-routespack/dist/types/index" />
 ```
 
 ## Todo
