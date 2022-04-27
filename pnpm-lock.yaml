@@ -3,7 +3,7 @@ lockfileVersion: 5.3
 specifiers:
   '@commitlint/cli': ^16.2.1
   '@commitlint/config-conventional': ^16.2.1
-  '@lazebird/vite-plugin-routespack': ^0.0.2
+  '@lazebird/vite-plugin-routespack': 0.0.3
   '@types/node': ^17.0.19
   '@typescript-eslint/eslint-plugin': ^5.12.1
   '@typescript-eslint/parser': ^5.12.1
@@ -37,7 +37,7 @@ dependencies:
 devDependencies:
   '@commitlint/cli': 16.2.1
   '@commitlint/config-conventional': 16.2.1
-  '@lazebird/vite-plugin-routespack': 0.0.2
+  '@lazebird/vite-plugin-routespack': 0.0.3
   '@types/node': 17.0.19
   '@typescript-eslint/eslint-plugin': 5.12.1_aa3af6382115a42a71cc388b7b2c30b3
   '@typescript-eslint/parser': 5.12.1_eslint@8.9.0+typescript@4.5.5
@@ -195,6 +195,27 @@ packages:
       - '@swc/wasm'
     dev: true
 
+  /@commitlint/load/16.2.3:
+    resolution: {integrity: sha512-Hb4OUlMnBUK6UxJEZ/VJ5k0LocIS7PtEMbRXEAA7eSpOgORIFexC4K/RaRpVd5UTtu3M0ST3ddPPijF9rdW6nw==}
+    engines: {node: '>=v12'}
+    dependencies:
+      '@commitlint/config-validator': 16.2.1
+      '@commitlint/execute-rule': 16.2.1
+      '@commitlint/resolve-extends': 16.2.1
+      '@commitlint/types': 16.2.1
+      '@types/node': 17.0.19
+      chalk: 4.1.2
+      cosmiconfig: 7.0.1
+      cosmiconfig-typescript-loader: 1.0.5_003c8a6da24af261bf8b8ce51aec1adf
+      lodash: 4.17.21
+      resolve-from: 5.0.0
+      typescript: 4.5.5
+    transitivePeerDependencies:
+      - '@swc/core'
+      - '@swc/wasm'
+    dev: true
+    optional: true
+
   /@commitlint/message/16.2.1:
     resolution: {integrity: sha512-2eWX/47rftViYg7a3axYDdrgwKv32mxbycBJT6OQY/MJM7SUfYNYYvbMFOQFaA4xIVZt7t2Alyqslbl6blVwWw==}
     engines: {node: '>=v12'}
@@ -321,8 +342,8 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
-  /@lazebird/vite-plugin-routespack/0.0.2:
-    resolution: {integrity: sha512-C/WjRwOtywOpApYF6xAXPGj/MzDv9Elb73rKDn+HW+i0KfpkRA13/Gju8W/lABu+j2g+GVP+gUiYg62Vfd4tlg==}
+  /@lazebird/vite-plugin-routespack/0.0.3:
+    resolution: {integrity: sha512-+WKJbehXqqsnHTTjKbHJ2+MTDnifvGmXqwTJmWt5QlgQqKf/bFeewW12wd+9oaCs+pvbEwUSs8/ci+QxyihWrA==}
     dependencies:
       axios: 0.26.1
       vue: 3.2.31
@@ -1171,7 +1192,7 @@ packages:
       longest: 2.0.1
       word-wrap: 1.2.3
     optionalDependencies:
-      '@commitlint/load': 16.2.1
+      '@commitlint/load': 16.2.3
     transitivePeerDependencies:
       - '@swc/core'
       - '@swc/wasm'
@@ -1188,7 +1209,7 @@ packages:
       longest: 2.0.1
       word-wrap: 1.2.3
     optionalDependencies:
-      '@commitlint/load': 16.2.1
+      '@commitlint/load': 16.2.3
     transitivePeerDependencies:
       - '@swc/core'
       - '@swc/wasm'

@@ -1,2 +1,2 @@
 // /src/vite-env.d.ts
-/// <reference types="@lazebird/vite-plugin-routespack/dist/types/index" />
+/// <reference types="@lazebird/vite-plugin-routespack/dist/client" />
