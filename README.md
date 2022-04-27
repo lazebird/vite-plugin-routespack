@@ -24,7 +24,7 @@ export const router = createRouter({ history: createWebHashHistory(), routes: fr
 export const setupRouter = (app: App<Element>) => app.use(router);
 // 类型，创建/src/vite-env.d.ts，写入下列内容
 // /src/vite-env.d.ts
-/// <reference types="@lazebird/vite-plugin-routespack/dist/types/index" />
+/// <reference types="@lazebird/vite-plugin-routespack/dist/client" />
 ```
 
 ## Todo

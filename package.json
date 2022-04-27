@@ -1,6 +1,6 @@
 {
   "name": "@lazebird/vite-plugin-routespack",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "keywords": [
     "vue3",
     "vite",
@@ -25,11 +25,11 @@
       "require": "./dist/vite-plugin-routespack.umd.js"
     }
   },
-  "types": "./dist/types/index.d.ts",
+  "types": "./dist/client.d.ts",
   "private": false,
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build && mkdir dist/types && cp src/components/routespack/client.d.ts dist/types/index.d.ts",
+    "build": "vue-tsc --noEmit && vite build && cp src/components/routespack/client.d.ts dist/",
     "demo": "vue-tsc --noEmit && vite build --mode demo",
     "publish": "npm publish --access public",
     "preview": "vite preview",
