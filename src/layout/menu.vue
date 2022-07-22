@@ -2,7 +2,7 @@
   <div>
     <div v-for="(r, index) in data" :key="index">
       <div :style="containerCss + calcCss(prefix, r.path)">
-        <RouterLink :style="linkCss + calcCss(prefix, r.path)" :to="calcPath(prefix, r.path)">{{ calcLabel(r.path) }}</RouterLink>
+        <RouterLink :style="linkCss + calcCss(prefix, r.path)" :to="calcPath(prefix, r.path)">{{ calcLabel(r.path) + calcExtraLabel(r, data) }}</RouterLink>
       </div>
       <Menu v-if="r.children" :data="r.children" :depth="depth + 1" :prefix="calcPath(prefix, r.path)" />
     </div>
@@ -18,6 +18,12 @@
 
   const calcPath = (prefix, path) => (path.charAt(0) === '/' ? path : `${prefix}/${path}`);
   const calcLabel = (path) => (path !== '/' && path.lastIndexOf('/') >= 0 ? path.slice(path.lastIndexOf('/') + 1) : path);
+  const calcExtraLabel = (r, a) => (r.path === '/' && ` (cnt.${countNodes(a, 0)})`) || '';
+
+  function countNodes(array, cnt) {
+    for (const r of array) cnt = r.children ? countNodes(r.children, cnt) : cnt + 1;
+    return cnt;
+  }
 
   const containerCss = `width: 100%; padding: 3px 0px;`;
   const linkCss = `padding-left: ${20 * props.depth}px;`;
